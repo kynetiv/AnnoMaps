@@ -1,0 +1,8 @@
+<% content_for :title do %>My AnnoMaps<% end %>
+<% content_for :head do %>
+<%= render :partial => "indexjs" %>
+<% end %>
+<div id="index-hero" class="hero-unit">
+	<a href="/users/<%=@user.id %>/maps/new" class="btn-large btn-info pull-right myBtn">Add Map</a>
+	<h1>My AnnoMaps</h1>
+</div>

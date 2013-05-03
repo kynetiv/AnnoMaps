@@ -1,0 +1,71 @@
+<script type="text/javascript">
+  var map;
+  var map_id = [];
+  var markersArray = [];
+  
+var getLatLng = function(lat, lng) {
+    return new google.maps.LatLng(lat, lng);
+	};
+
+
+function initialize(){
+   		
+	var latlng = new google.maps.LatLng(0, 0);
+
+	var mapOptions = {
+	// scrollwheel: false,
+		center: latlng,
+		// zoom: 10,
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+
+	var map = new google.maps.Map(document.getElementById("showDiv"), mapOptions);
+	var image = "<%= asset_path('hikerMarker.png') %>";
+	$.getJSON('/users/<%= @user.id %>/maps/<%= @my_map.id %>.json', function(my_markers) { 
+	    for(i = 0; i < my_markers.length; i++) {
+	      var lat = parseFloat(my_markers[i].lat);
+	      var lng = parseFloat(my_markers[i].lng);
+	     var marker = new google.maps.Marker({
+	      	map: map,
+	        position: getLatLng(lat, lng),
+	        icon: image,
+	        clickable: true
+	      });
+
+	      var infoWindowContent = [
+	        	"<div class='well well-small windowFrame'>",
+	        	my_markers[i].content,
+	        	"</div>"
+	        	].join("");
+
+ 			marker.info = new google.maps.InfoWindow({
+ 				content: infoWindowContent,
+ 				position: marker.position
+				});  
+ 				
+ 			markersArray.push(marker);
+
+	    };
+	    
+	    for(i = 0; i < markersArray.length; i++){
+	    	var infoWindow = new google.maps.InfoWindow();
+	    	var marker = markersArray[i];
+	    	google.maps.event.addListener(marker, 'click', function(event){
+	    	infoWindow.setContent(this.info.content);
+			infoWindow.open(map, this);
+		});
+	    };
+		
+	
+	    var latlngbounds = new google.maps.LatLngBounds();
+	    for ( var i = 0; i < my_markers.length; i++ ) {
+	    	var lat = parseFloat(my_markers[i].lat);
+		    var lng = parseFloat(my_markers[i].lng);
+	      latlngbounds.extend(getLatLng(lat, lng));
+	    }
+    	map.fitBounds(latlngbounds);
+    
+	});     	
+};
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>

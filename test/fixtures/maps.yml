@@ -1,0 +1,26 @@
+# == Schema Information
+#
+# Table name: maps
+#
+#  id         :integer          not null, primary key
+#  user_id    :integer
+#  lat        :float
+#  lng        :float
+#  name       :string(255)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  user: 
+  lat: 1.5
+  lng: 1.5
+  text: MyText
+
+two:
+  user: 
+  lat: 1.5
+  lng: 1.5
+  text: MyText

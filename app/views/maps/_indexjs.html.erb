@@ -1,0 +1,89 @@
+<script type="text/javascript">
+  var map;
+  var lat = [];
+  var lng = [];
+  var map_id = [];
+  var name = [];
+
+function initialize(coordinate, mapDiv, name)
+{
+  if(coordinate instanceof Array)
+  {
+ 		var latlng = new google.maps.LatLng(coordinate[mapDiv], coordinate[mapDiv+1]);
+  }
+	var mapOptions = {
+	scrollwheel: false,
+		center: latlng,
+		zoom: 4,
+		panControl: false,
+  		zoomControl: false,
+  		mapTypeControl: false,
+  		scaleControl: false,
+  		streetViewControl: false,
+  		overviewMapControl: false,
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+
+	var map = new google.maps.Map(document.getElementById("map_canvass"+mapDiv), mapOptions);
+
+	var marker = new google.maps.Marker({
+		position: latlng[mapDiv],
+		map: map,
+		clickable: true
+	});
+
+	var title = document.createElement('h2');
+	title.innerHTML = name;
+	title.style.color = 'DarkSlateGray';
+	title.style.textAlign = 'center';
+	title.style.fontFamily = 'Dosis';
+	title.style.backgroundColor = 'PapayaWhip';	
+	title.style.border = '2px solid Teal';
+	title.style.borderRadius = '5px';
+	title.style.padding = '2px 10px 2px 10px';
+	var myTextDiv = document.createElement('div');
+	myTextDiv.appendChild(title);
+	
+	map.controls[google.maps.ControlPosition.CENTER].push(myTextDiv);
+}; 
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+$.getJSON('/users/<%= @user.id %>/maps.json', function(my_coordinates) { 
+    for(i = 0; i < my_coordinates.length; i++) {
+    
+    lat[i] = parseFloat(my_coordinates[i].lat);
+    
+    lng[i] = parseFloat(my_coordinates[i].lng);
+
+    map_id[i] = my_coordinates[i].id;
+
+    name = my_coordinates[i].name;
+    console.log(name);
+
+    var coor= [];
+
+    coor[i] = lat[i];
+    coor[i+1] = lng[i];
+
+    var divTag = document.createElement("div"); 
+    divTag.id = "map_canvass"+i; 
+
+    divTag.setAttribute(); 
+
+    divTag.className = "dynamicDiv";
+
+    var nameTag = document.createElement('a');
+    nameTag.id = "link"+i;
+    nameTag.className = "dynamicName";
+    nameTag.setAttribute('href', '/users/<%=@user.id; %>/maps/'+map_id[i]);
+
+   document.body.appendChild(divTag);
+   $("#map_canvass"+i).wrap(nameTag).append('<h4>'+name+'</h4>');
+
+   
+    initialize(coor, i, name);
+    
+   };
+}); 
+</script>

@@ -1,0 +1,117 @@
+<script type="text/javascript">	
+
+	var map;
+	var mapId;
+	var markers = {};
+	var map_latlng = [];
+
+	var getMarkerUniqueId = function(lat, lng) {
+    return lat + '_' + lng;
+	};
+
+	var getLatLng = function(lat, lng) {
+    return new google.maps.LatLng(lat, lng);
+	};
+
+	$(document).ready(function(){
+		$('#new_canvass').hide();
+		// $('#map_name').hide();
+	});
+	
+   		function initialize(coordinate){
+       		var latlng = new google.maps.LatLng(coordinate.lat, coordinate.lng);
+			var mapOptions = {
+				center: latlng,
+				zoom: 10,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+
+ 			map = new google.maps.Map(document.getElementById("new_canvass"), mapOptions);
+
+ 			var image = "<%= asset_path('hikerMarker.png') %>";
+ 			var addMarker = google.maps.event.addListener(map, 'click', function(event){
+ 				var lat = event.latLng.lat();
+ 				var lng = event.latLng.lng();
+ 				var markerId = getMarkerUniqueId(lat, lng);
+ 				var marker = new google.maps.Marker({
+ 					position: getLatLng(lat, lng),
+ 					map: map,
+ 					icon: image,
+ 					id: 'marker_' + markerId
+ 				
+ 				});
+ 				var infoWindowContent = [
+	        	"Make your Mark!<br />",
+	        	"<div class='well well-small'>",
+	        	"<form id='"+markerId+"' class='markers' action='/markers.json' method='post'>",
+	        	"<textarea class='info_area' name='text'></textarea><br />",
+	        	"<input name='authenticity_token' value='<%= form_authenticity_token %>' type='hidden'/>",
+	        	"<input name='map_id' type='hidden' value='"+mapId+"'/>", 
+	        	"<input class='latlng_input' name='lat' type='hidden' value='"+lat+"'/>", 
+	        	"<input class='latlng_input' name='lng' type='hidden' value='"+lng+"'/>", 
+	        	"<button type='submit' class='btn btn-info pull-right'>Mark</button>",
+	        	"</form>",
+	        	"</div>"
+	        	].join("");
+
+ 				marker.info = new google.maps.InfoWindow({
+ 				 	content: infoWindowContent,
+ 				 	postion: marker.position
+				});
+
+				 google.maps.event.addListener(marker, 'click', function(event)
+		         {	
+					marker.info.open(map, marker);
+				 });
+
+				 google.maps.event.addListener(marker.info, 'domready', function() {
+        			$('.markers').on('submit', function(){
+        				var form = $(this);
+            			$.post(form.attr('action'), form.serialize(), function(marker){
+
+            				alert("Marker Saved!");
+            			}, "json");
+            			return false;
+
+        			});
+
+				});
+
+ 				markers[markerId] = marker;
+				bindMarkerEvents(marker); 	
+
+ 			});
+
+ 			var bindMarkerEvents = function(marker) {
+	 			google.maps.event.addListener(marker, "rightclick", function (point) {
+					var markerId = getMarkerUniqueId(point.latLng.lat(), point.latLng.lng());
+					var marker = markers[markerId];
+					removeMarker(marker, markerId);
+	 			});
+ 			};
+
+ 			var removeMarker = function(marker, markerId) {
+ 				marker.setMap(null);
+ 				delete markers[markerId];
+ 			};
+
+ 		};
+
+      	google.maps.event.addDomListener(window, 'load', initialize);
+
+	    $(document).ready(function(){
+	        $("#add_map").on('submit', function(){
+			$('#new_canvass').slideDown();
+			$("#add_map").hide();
+
+            var form = $(this);
+            $.post(form.attr('action'), form.serialize(), function(map){
+                
+                  initialize(map);
+                  mapId = map.id;
+                
+            }, "json");
+            return false;
+	        });
+    	});
+</script>

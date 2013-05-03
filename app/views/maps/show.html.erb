@@ -1,0 +1,9 @@
+<% content_for :title do %><%=@my_map.name %>|AnnoMaps<% end %>
+<% content_for :head do %>
+<%= render :partial => "showjs" %>
+<% end %>
+<div class="hero-unit">
+	<a href="/users/<%=@user.id %>/maps" class="btn-large btn-info pull-right myBtn">Back to Dashboard</a>
+	<h1><%= @my_map.name %></h1>
+</div>
+<div id="showDiv"></div>

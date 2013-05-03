@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Annomaps</title>
+  <%= stylesheet_link_tag    "users", :media => "all" %>
+  <%= javascript_include_tag "users.js.coffee" %>
+  <%= csrf_meta_tags %>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+</head>
+<body>
+
+<%= yield %>
+
+</body>
+</html>

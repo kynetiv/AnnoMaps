@@ -1,0 +1,31 @@
+<% content_for :title do %>Create Map<% end %>
+<div class="hero-unit">
+	<a href="/users/<%=@user.id %>/maps" class="btn-large btn-info pull-right myBtn">Back to Maps</a>
+	<h1>AnnoMap It!</h1>
+</div>
+<% content_for :head do %>
+<%= render :partial => "newjs" %>
+<% end %>
+<div id="new_canvass" class="container" sytle="width:750px; height:500px;"></div>
+
+	<form id="add_map" class="form-horizontal text-center" action="/users/<%= @user.id %>/maps.json" method="post">
+	<div id="formDiv" class="well">
+			<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden"/>
+			<input type="hidden" name="user" value="<%=@user.id %>" />
+		<div class="control-group">
+			<label class="pull-left" for="name">Map Name: </label>
+			<div class="">
+				<input type="text" name="name"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="pull-left" for="name">Address: </label>
+			<div class="">
+				<input type="text" name="address"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<button id="mapBtn" type="submit" class="btn-large btn-info pull-right">Snap!</button>
+		</div>
+	</div>
+	</form>

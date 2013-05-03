@@ -1,0 +1,89 @@
+// Place all the styles related to the Maps controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "bootstrap";
+
+div#bodyDiv {
+	margin: 0 auto;
+}
+
+div.dynamicDiv {
+	margin: 30px 0 0 30px;
+	display: inline-block;
+	width:300px;
+	height:300px;
+	border: 2px solid Teal;
+}
+
+div.dynamicDiv img {
+	max-width: none;
+}
+
+a.dynamicName {
+	font-family: Dosis;
+}
+
+div#new_canvass {
+	margin: 0 auto;
+	width:1000px;
+	height:500px;
+}
+
+div#new_canvass img {
+	max-width: none;
+}
+
+textarea.info_area {
+	height: 80px;
+}
+
+div#showDiv {
+	margin: 0 auto;
+	width: 1000px;
+	height: 500px;
+}
+
+div#showDiv img {
+	max-width: none;
+}
+
+div.windowFrame {
+	max-width: 200px;
+}
+
+div#formDiv {
+	display: inline-block;
+	font-family: Dosis;
+}
+
+h1 {
+	border: 2px solid Teal;
+	background-color: PapayaWhip;
+	padding: 10px 50px 10px 50px;
+	border-radius: 5px;
+	color: DarkSlateGray;
+}
+
+.hero-unit {
+	background-color: navajowhite;
+	font-family: Dosis;
+	color: darkslategray;
+}
+
+a.myBtn {
+	margin-top: 25px;
+	margin-right: 15px;
+}
+
+button#mapBtn {
+	font-family: Dosis;
+}
+body  {
+	background-color: DarkSeaGreen;
+}
+
+label {
+	font-size: 18px;
+	color: DarkSeaGray;
+}
+
